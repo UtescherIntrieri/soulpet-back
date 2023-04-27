@@ -22,6 +22,24 @@ router.get("/pets/:id", async (req, res) => {
   }
 });
 
+//Rota Get para listar pets dos Clientes
+
+router.get('/clientes/:clienteId/pets', async (req, res) => {
+  const { clienteId } = req.params;
+
+  const cliente = await Cliente.findByPk(clienteId);
+  if (!cliente) {
+    return res.status(404).json({ mensagem: "Cliente não encontrado." });
+  }
+
+  const listaPets = await Pet.findAll({ where: { clienteId } });
+  if (listaPets.length === 0) {
+    return res.status(404).json({ mensagem: "Este cliente ainda não cadastrou nenhum pet." });
+  }
+
+  res.json(listaPets);
+});
+
 router.post("/pets", async (req, res) => {
   const { nome, tipo, porte, dataNasc, clienteId } = req.body;
 
