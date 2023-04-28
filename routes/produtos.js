@@ -31,6 +31,30 @@ router.get("/produtos/:id", async (req, res) => {
   }
 });
 
+router.post("/produtos",async (req, res) => {
+  const { nome, descricao, preco, desconto, dataDesconto, categoria } = req.body
+  const categorias = ["Higiene", "Brinquedos", "Conforto"]
+  
+  try {
+    if ((dataDesconto) || (desconto) || (categoria)) {
+      if (desconto <0 || desconto > 100) {
+        return res.status(400).json( { message: "Desconto inválido"})
+      }
+      if (!categorias.includes(categoria)){
+        return res.status(400).json( { message: "Categoria inválida"})
+      }
+      if (new Date() >= new Date(dataDesconto)) {
+        return res.status(400).json( { message: "Desconto vencido"})
+      }
+      const novoProduto = await Produto.create({ nome, descricao, preco, desconto, dataDesconto, categoria })
+      res.status(201).json(novoProduto)
+    }
+  } catch (error) {
+    console.log(err);
+    res.status(500).json({ message: "Um erro aconteceu"})
+  }
+})
+
 //Deletar todos os produtos da tabela
 router.delete("/produtos/all", async (req, res) => {
     try {
