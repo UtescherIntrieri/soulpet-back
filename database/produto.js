@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const { connection } = require("./database");
+const Pedido = require("./pedido");
 
 const Produto = connection.define("produto",
     new Schema({
@@ -30,4 +31,7 @@ const Produto = connection.define("produto",
     })
 )
     
+Produto.hasMany(Pedido,)
+Pedido.hasMany(Produto,)
+
 module.exports = Produto
