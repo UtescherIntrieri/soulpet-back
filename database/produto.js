@@ -23,7 +23,7 @@ const Produto = connection.define("produto", {
       type: DataTypes.DATE,
       allowNull: false
    },
-   caregoria:{
+   categoria:{
       type: DataTypes.STRING,
       allowNull: true
    },
