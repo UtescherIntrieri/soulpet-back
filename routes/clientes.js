@@ -28,6 +28,24 @@ router.get("/clientes/:id", async (req, res) => {
   }
 });
 
+//Rota get para mostrar apenas o endereço do cliente
+
+router.get('/clientes/:clienteId/endereco', async (req, res) => {
+  try {
+    const { clienteId } = req.params;
+
+    const endereco = await Endereco.findByPk(clienteId);
+    if (!endereco) {
+      return res.status(404).json({ mensagem: "Cliente não encontrado." });
+    }
+
+    res.json(endereco);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensagem: "Ocorreu um erro ao buscar o endereço do cliente." });
+  }
+});
+
 router.post("/clientes", async (req, res) => {
   // Coletar os dados do req.body
   const { nome, email, telefone, endereco } = req.body;

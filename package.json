@@ -1,7 +1,6 @@
 {
   "name": "soulpet-rn1",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,5 +16,6 @@
     "morgan": "^1.10.0",
     "mysql2": "^3.2.3",
     "sequelize": "^6.31.0"
-  }
+  },
+  "description": ""
 }
