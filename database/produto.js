@@ -30,6 +30,7 @@ const Produto = connection.define("produto",
         },
     })
 )
-    
+Produto.hasMany(Pedido)
+Pedido.hasMany(Produto)
 
 module.exports = Produto
