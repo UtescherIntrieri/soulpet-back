@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const { connection } = require("./database");
 const Cliente = require("./cliente");
+const Produto = require("./produto")
 
 const Pedido = connection.define("pedido", {
     codigo: {
@@ -16,6 +17,8 @@ const Pedido = connection.define("pedido", {
 
 Cliente.hasMany(Pedido, { onDelete: "CASCADE" });
 Pedido.belongsTo(Cliente);
+Produto.hasMany(Pedido,)
+Pedido.hasMany(Produto,)
 
 
 module.exports = Pedido;
