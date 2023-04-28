@@ -17,8 +17,5 @@ const Pedido = connection.define("pedido", {
 
 Cliente.hasMany(Pedido, { onDelete: "CASCADE" });
 Pedido.belongsTo(Cliente);
-Produto.hasMany(Pedido,)
-Pedido.hasMany(Produto,)
-
 
 module.exports = Pedido;

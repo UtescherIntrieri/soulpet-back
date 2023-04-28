@@ -28,6 +28,8 @@ const Produto = connection.define("produto", {
       allowNull: true
    },
  })
-    
+ 
+Produto.hasMany(Pedido)
+Pedido.hasMany(Produto)
 
 module.exports = Produto
