@@ -1,35 +1,33 @@
 const { DataTypes } = require("sequelize");
 const { connection } = require("./database");
 
-const Produtos =connection.define(
-    "produtos",
+const Produto = connection.define("produto",
     new Schema({
         nome: {
-            type: DataTypes.STRING,
-           allowNull: true
+           type: DataTypes.STRING,
+           allowNull: false
         },
         preco: {
             type: Number,
-           allowNull: true
+           allowNull: false
         },
         descricao: {
-            type: DataTypes.STRING,
             type: DataTypes.STRING(150),
-            allowNull: true,
+            allowNull: false
         },
         desconto: {
-            type: Number,
-           allowNull: true
+           type: Number,
+           allowNull: false
         },
         dataDesconto: {
-            type: Date,
-           allowNull: true
+           type: Date,
+           allowNull: false
         },
         caregoria:{
-            type: DataTypes.STRING,
+           type: DataTypes.STRING,
            allowNull: true
         },
     })
 )
     
-module.exports = Produtos
+module.exports = Produto
