@@ -16,7 +16,7 @@ const Cliente = connection.define("cliente", {
     // email VARCHAR UNIQUE NOT NULL
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: true, 
   },
   telefone: {
     // telefone VARCHAR NOT NULL
