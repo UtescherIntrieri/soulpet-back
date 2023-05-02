@@ -2,7 +2,7 @@ const Joi = require("@hapi/joi");
 const { DataTypes } = require("sequelize");
 const { connection } = require("./database");
 const Pet = require("./pet");
-const Servico = require("./servico");
+const { Servico } = require("./servico");
 
 const agendamentoSchema = Joi.object({
     dataAgendada: Joi.date().iso().min(new Date().toISOString().split('T')[0]).required(),               

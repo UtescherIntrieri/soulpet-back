@@ -1,8 +1,25 @@
 const { Router } = require("express");
-const Pet = require("../database/pet");
-const Servico = require("../database/servico");
+const { Servico } = require("../database/servico");
+const { servicoSchema } = require("../database/servico");
 
 const router = Router();
+
+router.post("/servicos", async (req, res) => {
+  const { nome, preco } = req.body;
+  const { error, value } = servicoSchema.validate(req.body);
+  
+  if(error) {
+    return res.status(400).json({ message: "Erro de validação", error: error.details  });
+  }
+
+    try {
+        const novoServico = await Servico.create({ nome, preco })
+        res.status(201).json(novoServico);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Um erro aconteceu"})
+    }
+  });
 
 //Deletar todos os serviços
 router.delete("/servicos/all", async (req, res) => {
