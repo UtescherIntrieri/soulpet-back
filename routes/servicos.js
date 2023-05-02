@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const Pet = require("../database/pet");
 const Servico = require("../database/servico");
 
 const router = Router();
@@ -32,7 +33,6 @@ router.delete("/servicos/:id", async (req, res) => {
       res.status(500).json({ message: "Um erro aconteceu." });
     }
 });
-
 
 
 module.exports = router;
