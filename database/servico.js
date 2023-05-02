@@ -1,5 +1,11 @@
+const Joi = require("@hapi/joi");
 const { DataTypes } = require("sequelize");
 const { connection } = require("./database");
+
+const servicoSchema = Joi.object({
+    nome: Joi.string().required(),              
+    preco: Joi.number().precision(2).max(999999).required(),
+})
 
 const Servico = connection.define("servico", {
     nome : {
@@ -12,4 +18,7 @@ const Servico = connection.define("servico", {
     }
 });
 
-module.exports = Servico;
+module.exports = {
+    Servico,
+    servicoSchema
+}
