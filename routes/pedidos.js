@@ -1,25 +1,27 @@
 const Pedido = require("../database/pedido");
 const Produto = require("../database/produto");
-
+const Cliente = require("../database/cliente");
 const { Router } = require("express");
 
 // Criar o grupo de rotas (/pedidos)
 const router = Router();
 
 router.get("/pedidos", async (req, res) => {
-  const listaPedidos = await Pedido.findAll();
+  const listaPedidos = await Pedido.findAll({
+    include: [Cliente, Produto],
+  });
   res.json(listaPedidos);
 });
 
-router.get("/pedidos/:id", async (req, res) => {
-  const { id } = req.params;
-
-  const pedido = await pedido.findByPk(id);
-  if (pedido) {
-    res.json(pedido);
-  } else {
-    res.status(404).json({ message: "pedido não encontrado." });
-  }
+router.get("/pedidos/:codigo", async (req, res) => {
+  const { codigo } = req.params;
+  
+    const pedidoId = await Pedido.findByPk(codigo, {include: [Cliente, Produto]});
+    if (pedidoId) {
+      res.json(pedidoId);
+    } else {
+      res.status(404).json({ message: "Pedido não encontrado." });
+    }
 });
 
 //Rota Get para listar pedidos dos Clientes
@@ -60,48 +62,45 @@ router.get('/pedidos/produtos/:id', async (req, res) => {
   });
 
 router.post("/pedidos", async (req, res) => {
-  const {clienteId, pedidoId, produto, } = req.body;
+  const { codigo, quantidade, clienteId, produtoId, } = req.body;
 
   try {
     const cliente = await Cliente.findByPk(clienteId);
-    if (cliente) {
-      const pedido = await pedido.create({ clienteId, pedidoId, produto, });
+    const produto = await Produto.findByPk(produtoId);
+    if (cliente && produto) {
+      const pedido = await Pedido.create({ codigo, quantidade, clienteId, produtoId});
       res.status(201).json(pedido);
     } else {
-      res.status(404).json({ message: "Cliente não encontrado." });
+      res.status(404).json({ message: "Cliente ou Produto não encontrado." });
     }
+
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Um erro aconteceu." });
   }
-});
+})
 
-router.put("/pedidos/:id", async (req, res) => {
-  // Esses são os dados que virão no corpo JSON
-  const { produto } = req.body;
-
-  // É necessário checar a existência do pedido
-  // SELECT * FROM pedidos WHERE id = "req.params.id";
-  const pedido = await pedido.findByPk(req.params.id);
-
-  // se pedido é null => não existe o pedido com o id
+router.put('/pedidos/:id', async (req, res) => {
   try {
-    if (pedido) {
-      // IMPORTANTE: Indicar qual o pedido a ser atualizado
-      // 1º Arg: Dados novos, 2º Arg: Where
-      await pedido.update(
-        { produto, pedido, },
-        { where: { id: req.params.id } } // WHERE id = "req.params.id"
-      );
-      res.json({ message: "O pedido foi editado." });
-    } else {
-      // caso o id seja inválido, a resposta ao cliente será essa
-      res.status(404).json({ message: "O pedido não foi encontrado." });
+    const pedidoAtualizado = req.body;
+    const pedidoId = req.params.id;
+
+    const pedido = await Pedido.findByPk(pedidoId);
+
+    if (!pedido) {
+      return res.status(404).json({ message: 'Pedido não encontrado' });
     }
-  } catch (err) {
-    // caso algum erro inesperado, a resposta ao cliente será essa
-    console.log(err);
-    res.status(500).json({ message: "Um erro aconteceu." });
+
+    pedido.produto = pedidoAtualizado.produto || pedido.produto;
+    pedido.quantidade = pedidoAtualizado.quantidade || pedido.quantidade;
+    pedido.valor_unitario = pedidoAtualizado.valor_unitario || pedido.valor_unitario;
+
+    await pedido.save();
+
+    res.status(200).json(pedido);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erro ao atualizar pedido' });
   }
 });
 

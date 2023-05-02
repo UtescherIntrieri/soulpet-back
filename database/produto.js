@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const { connection } = require("./database");
-const Pedido = require("./pedido");
 
 const Produto = connection.define("produto", {
    nome: {
@@ -28,8 +27,5 @@ const Produto = connection.define("produto", {
       allowNull: false
    },
  })
- 
-Produto.hasMany(Pedido)
-Pedido.hasMany(Produto)
 
 module.exports = Produto

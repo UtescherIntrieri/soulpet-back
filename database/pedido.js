@@ -7,15 +7,18 @@ const Pedido = connection.define("pedido", {
     codigo: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
         primaryKey: true
     },
     quantidade: {
         type: DataTypes.INTEGER,
-        defaultValue: 0
+        allowNull: false,
     }
 })
 
 Cliente.hasMany(Pedido, { onDelete: "CASCADE" });
 Pedido.belongsTo(Cliente);
+Produto.hasMany(Pedido);
+Pedido.belongsTo(Produto);
 
 module.exports = Pedido;
