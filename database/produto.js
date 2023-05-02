@@ -20,12 +20,12 @@ const Produto = connection.define("produto", {
       allowNull: false
    },
    dataDesconto: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false
    },
    categoria:{
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: false
    },
  })
  
