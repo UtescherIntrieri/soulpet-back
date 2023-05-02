@@ -6,7 +6,7 @@ const { Servico } = require("./servico");
 
 const agendamentoSchema = Joi.object({
     dataAgendada: Joi.date().min(new Date().toISOString().split('T')[0]).required(),               
-    realizada: Joi.boolean(),
+    realizado: Joi.boolean(),
     petId: Joi.number().integer().required(),
     servicoId: Joi.number().integer().required(),
 }).options({ convert: true })
@@ -17,7 +17,7 @@ const Agendamento = connection.define("agendamento", {
         type: DataTypes.DATEONLY,
         allowNull: false,
     },
-    realizada: {
+    realizado: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     }
