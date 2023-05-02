@@ -60,6 +60,28 @@ router.post("/agendamentos", async (req, res) => {
     }
     })
 
+    router.put("/agendamentos/:id", async (req, res) => {
+        const { dataAgendada, dataRealizada, petId, servicoId } = req.body;
+        
+        const pet = await Pet.findByPk(petId);
+        const servico = await Servico.findByPk(servicoId);
+
+        try {
+            if(pet && servico) {
+                await Agendamento.update(
+                    { dataAgendada, dataRealizada },
+                    { where: { id: req.params.id }}
+                );
+                res.json({ message: "O agendamento foi atualizado com sucesso"})
+            } else {
+                res.status(404).json({ error: "Pet ou Serviço não encontrados"})
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ message: "Um erro aconteceu"})
+        }
+    })
+
 //Deletar todos os agendamentos
 router.delete("/agendamentos/all", async (req, res) => {
     try {
