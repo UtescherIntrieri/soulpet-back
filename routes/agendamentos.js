@@ -2,7 +2,7 @@ const { Router } = require("express");
 const { Agendamento } = require("../database/agendamento");
 const { agendamentoSchema } = require("../database/agendamento");
 const Pet = require("../database/pet");
-const Servico = require("../database/servico");
+const { Servico } = require("../database/servico");
 
 const router = Router();
 
@@ -34,7 +34,7 @@ router.get('/agendamentos/:id', async (req, res) => {
 
 // Criar agendamento
 router.post("/agendamentos", async (req, res) => {
-    const { dataAgendada, dataRealizada, petId, servicoId } = req.body;
+    const { dataAgendada, petId, servicoId } = req.body;
     const { error, value } = agendamentoSchema.validate(req.body);
 
     if(error) {
@@ -46,7 +46,6 @@ router.post("/agendamentos", async (req, res) => {
     if(pet && servico) {
         const agendamento = await Agendamento.create({
             dataAgendada,
-            dataRealizada,
             petId,
             servicoId
         });
@@ -61,7 +60,7 @@ router.post("/agendamentos", async (req, res) => {
     })
 
     router.put("/agendamentos/:id", async (req, res) => {
-        const { dataAgendada, dataRealizada, petId, servicoId } = req.body;
+        const { dataAgendada, realizada, petId, servicoId } = req.body;
         
         const pet = await Pet.findByPk(petId);
         const servico = await Servico.findByPk(servicoId);
@@ -69,7 +68,7 @@ router.post("/agendamentos", async (req, res) => {
         try {
             if(pet && servico) {
                 await Agendamento.update(
-                    { dataAgendada, dataRealizada },
+                    { dataAgendada, realizada },
                     { where: { id: req.params.id }}
                 );
                 res.json({ message: "O agendamento foi atualizado com sucesso"})
@@ -95,16 +94,15 @@ router.delete("/agendamentos/all", async (req, res) => {
 
 //Deletar agendamento por id
 router.delete("/agendamentos/:id", async (req, res) => {
-   
     const { id } = req.params;
     
     const agendamento = await Agendamento.findOne({ where: { id } });
     try {
       if (agendamento) {
         await agendamento.destroy();
-        res.status(200).json({ message: "Serviço removido!" });
+        res.status(200).json({ message: "Agendamento removido!" });
       } else {
-        res.status(404).json({ message: "Serviço não encontrado." });
+        res.status(404).json({ message: "Agendamento não encontrado." });
       }
     } catch (err) {
       console.error(err);
