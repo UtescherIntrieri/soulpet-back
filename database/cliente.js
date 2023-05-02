@@ -14,13 +14,13 @@ const Cliente = connection.define("cliente", {
   },
   email: {
     // email VARCHAR UNIQUE NOT NULL
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(130),
     allowNull: false,
-    unique: true, 
+    unique: false,
   },
   telefone: {
     // telefone VARCHAR NOT NULL
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(130),
     allowNull: false,
   },
 });

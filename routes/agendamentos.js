@@ -6,6 +6,32 @@ const Servico = require("../database/servico");
 
 const router = Router();
 
+//Listar todos agendamentos
+router.get("/agendamentos", async (req, res) =>{
+  
+  const listaAgendamentos = await Agendamento.findAll();
+  res.json(listaAgendamentos)
+  
+}) 
+
+//Listar um agendamento por id
+router.get('/agendamentos/:id', async (req, res) => {
+  try {
+    const agendamento = await Agendamento.findOne({
+      where: { id: req.params.id },
+    });
+
+    if (!agendamento) {
+      return res.status(404).json({ message: 'Agendamento não encontrado.' });
+    }
+
+    return res.json(agendamento);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Ocorreu um erro ao buscar o agendamento.' });
+  }
+});
+
 // Criar agendamento
 router.post("/agendamentos", async (req, res) => {
     const { dataAgendada, dataRealizada, petId, servicoId } = req.body;
