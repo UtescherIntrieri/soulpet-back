@@ -59,31 +59,36 @@ router.post("/pets", async (req, res) => {
 
 router.put("/pets/:id", async (req, res) => {
   // Esses são os dados que virão no corpo JSON
-  const { nome, tipo, dataNasc, porte } = req.body;
+  const { clienteId, nome, tipo, dataNasc, porte } = req.body;
 
   // É necessário checar a existência do Pet
   // SELECT * FROM pets WHERE id = "req.params.id";
   const pet = await Pet.findByPk(req.params.id);
+  const cliente = await Cliente.findByPk(clienteId);
 
   // se pet é null => não existe o pet com o id
   try {
     if (pet) {
       // IMPORTANTE: Indicar qual o pet a ser atualizado
       // 1º Arg: Dados novos, 2º Arg: Where
-      await Pet.update(
-        { nome, tipo, dataNasc, porte },
-        { where: { id: req.params.id } } // WHERE id = "req.params.id"
-      );
-      // await pet.update({ nome, tipo, dataNasc, porte });
-      res.json({ message: "O pet foi editado." });
-    } else {
-      // caso o id seja inválido, a resposta ao cliente será essa
-      res.status(404).json({ message: "O pet não foi encontrado." });
-    }
-  } catch (err) {
-    // caso algum erro inesperado, a resposta ao cliente será essa
-    console.log(err);
-    res.status(500).json({ message: "Um erro aconteceu." });
+      if (cliente) {
+        await Pet.update(
+          { clienteId, nome, tipo, dataNasc, porte },
+          { where: { id: req.params.id } } // WHERE id = "req.params.id"
+          );
+          // await pet.update({ nome, tipo, dataNasc, porte });
+          res.json({ message: "O pet foi editado." });
+        } else {
+          res.status(404).json({ message: "O cliente não foi encontrado." });
+        }
+      } else {
+         // caso o id seja inválido, a resposta ao cliente será essa
+         res.status(404).json({ message: "O pet não foi encontrado." });
+       }
+    } catch (err) {
+        // caso algum erro inesperado, a resposta ao cliente será essa
+        console.log(err);
+        res.status(500).json({ message: "Um erro aconteceu." });
   }
 });
 
