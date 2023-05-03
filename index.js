@@ -9,6 +9,7 @@ const app = express();
 app.use(express.json()); // Possibilitar transitar dados usando JSON
 app.use(morgan("dev"));
 
+
 // Configurações de acesso
 app.use(cors({ origin: "http://localhost:3000" }));
 
@@ -17,11 +18,13 @@ const { connection, authenticate } = require("./database/database");
 authenticate(connection); // efetivar a conexão
 
 // Definição de Rotas
+
 const rotasClientes = require("./routes/clientes");
 const rotasPets = require("./routes/pets");
 const rotasProdutos = require("./routes/produtos");
 const rotasServicos = require("./routes/servicos");
 const rotasAgendamentos = require("./routes/agendamentos");
+const rotasDashboard = require("./routes/dashboard")
 
 
 
@@ -31,6 +34,7 @@ app.use(rotasPets);
 app.use(rotasProdutos);
 app.use(rotasServicos);
 app.use(rotasAgendamentos);
+app.use(rotasDashboard);
 
 
 
