@@ -4,6 +4,32 @@ const { servicoSchema } = require("../database/servico");
 
 const router = Router();
 
+//Listar todos serviços
+router.get("/servicos", async (req, res) =>{
+  
+  const listaServicos = await Servico.findAll();
+  res.json(listaServicos)
+  
+}) 
+
+//Listar um serviço por id
+router.get('/servicos/:id', async (req, res) => {
+  try {
+    const servico = await Servico.findOne({
+      where: { id: req.params.id },
+    });
+
+    if (!servico) {
+      return res.status(404).json({ message: 'Serviço não encontrado.' });
+    }
+
+    return res.json(servico);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Ocorreu um erro ao buscar o serviço solicitado.' });
+  }
+});
+
 router.post("/servicos", async (req, res) => {
   const { nome, preco } = req.body;
   const { error, value } = servicoSchema.validate(req.body);
