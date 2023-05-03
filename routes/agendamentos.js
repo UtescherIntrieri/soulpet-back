@@ -60,7 +60,7 @@ router.post("/agendamentos", async (req, res) => {
     })
 
     router.put("/agendamentos/:id", async (req, res) => {
-        const { dataAgendada, realizado, petId, servicoId } = req.body;
+        const { dataAgendada, realizada, petId, servicoId } = req.body;
         
         const pet = await Pet.findByPk(petId);
         const servico = await Servico.findByPk(servicoId);
@@ -68,7 +68,7 @@ router.post("/agendamentos", async (req, res) => {
         try {
             if(pet && servico) {
                 await Agendamento.update(
-                    { dataAgendada, realizado },
+                    { dataAgendada, realizada },
                     { where: { id: req.params.id }}
                 );
                 res.json({ message: "O agendamento foi atualizado com sucesso"})
