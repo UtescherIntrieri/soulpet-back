@@ -1,6 +1,7 @@
-const Pedido = require("../database/pedido");
+const { Pedido } = require("../database/pedido");
+const { pedidoSchema } = require("../database/pedido")
 const Produto = require("../database/produto");
-const Cliente = require("../database/cliente");
+const { Cliente } = require("../database/cliente");
 const { Router } = require("express");
 
 // Criar o grupo de rotas (/pedidos)
@@ -63,6 +64,11 @@ router.get('/pedidos/produtos/:id', async (req, res) => {
 
 router.post("/pedidos", async (req, res) => {
   const { codigo, quantidade, clienteId, produtoId, } = req.body;
+  const { error, value } = pedidoSchema.validate(req.body);
+
+  if(error) {
+    return res.status(400).json({ message: "Erro de validação", error: error.details[0].message })
+  }
 
   try {
     const cliente = await Cliente.findByPk(clienteId);
@@ -84,6 +90,11 @@ router.put('/pedidos/:id', async (req, res) => {
   try {
     const pedidoAtualizado = req.body;
     const pedidoId = req.params.id;
+    const { error, value } = pedidoSchema.validate(req.body);
+
+    if(error) {
+      return res.status(400).json({ message: "Erro de validação", error: error.details[0].message })
+    }
 
     const pedido = await Pedido.findByPk(pedidoId);
 

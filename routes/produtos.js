@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const Produto = require("../database/produto");
+const { Produto, produtoSchema } = require("../database/produto");
 
 const router = Router();
 
@@ -35,6 +35,11 @@ router.get("/produtos/:id", async (req, res) => {
 router.post("/produtos", async (req, res) => {
   const { nome, descricao, preco, desconto, dataDesconto, categoria } = req.body
   const categorias = ["Higiene", "Brinquedos", "Conforto"]
+  const { error, value } = produtoSchema.validate(req.body);
+
+  if(error) {
+    return res.status(400).json({ message: "Erro de validação", error: error.details[0].message })
+  }
 
   try {
     if ((dataDesconto) || (desconto) || (categoria)) {
@@ -44,7 +49,7 @@ router.post("/produtos", async (req, res) => {
       if (!categorias.includes(categoria)) {
         return res.status(400).json({ message: "Categoria inválida" })
       }
-      if (new Date() >= new Date(dataDesconto)) {
+      if (new Date(dataDesconto) < new Date().toISOString) {
         return res.status(400).json({ message: "Desconto vencido" })
       }
       const novoProduto = await Produto.create({ nome, descricao, preco, desconto, dataDesconto, categoria })
@@ -62,6 +67,12 @@ router.put("/produtos/:id", async (req, res) => {
   const categorias = ["Higiene", "Brinquedos", "Conforto"]
   const produto = await Produto.findByPk(req.params.id);
 
+  const { error, value } = produtoSchema.validate(req.body);
+
+  if(error) {
+    return res.status(400).json({ message: "Erro de validação", error: error.details[0].message })
+  }
+
   try {
     if (produto) {
       if (desconto < 0 || desconto > 100) {
@@ -70,7 +81,7 @@ router.put("/produtos/:id", async (req, res) => {
       if (!categorias.includes(categoria)) {
         return res.status(400).json({ message: "Categoria inválida" })
       }
-      if (new Date() >= new Date(dataDesconto)) {
+      if (new Date(dataDesconto) < new Date().toISOString) {
         return res.status(400).json({ message: "Desconto vencido" })
       } else {
         await Produto.update(
@@ -120,3 +131,4 @@ router.delete("/produtos/:id", async (req, res) => {
 
 
 module.exports = router;
+

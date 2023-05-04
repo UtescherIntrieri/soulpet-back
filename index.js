@@ -24,6 +24,7 @@ const rotasPets = require("./routes/pets");
 const rotasProdutos = require("./routes/produtos");
 const rotasServicos = require("./routes/servicos");
 const rotasAgendamentos = require("./routes/agendamentos");
+const rotasPedidos = require("./routes/pedidos");
 const rotasDashboard = require("./routes/dashboard")
 
 
@@ -34,6 +35,7 @@ app.use(rotasPets);
 app.use(rotasProdutos);
 app.use(rotasServicos);
 app.use(rotasAgendamentos);
+app.use(rotasPedidos);
 app.use(rotasDashboard);
 
 

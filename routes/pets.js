@@ -1,5 +1,5 @@
-const Cliente = require("../database/cliente");
-const Pet = require("../database/pet");
+const { Cliente } = require("../database/cliente");
+const { Pet, petSchema } = require("../database/pet");
 
 const { Router } = require("express");
 
@@ -42,6 +42,11 @@ router.get('/clientes/:clienteId/pets', async (req, res) => {
 
 router.post("/pets", async (req, res) => {
   const { nome, tipo, porte, dataNasc, clienteId } = req.body;
+  const { error, value } = petSchema.validate(req.body);
+
+  if(error) {
+      return res.status(400).json({ message: "Erro de validação", error: error.details[0].message })
+  }
 
   try {
     const cliente = await Cliente.findByPk(clienteId);
@@ -60,6 +65,11 @@ router.post("/pets", async (req, res) => {
 router.put("/pets/:id", async (req, res) => {
   // Esses são os dados que virão no corpo JSON
   const { clienteId, nome, tipo, dataNasc, porte } = req.body;
+  const { error } = petSchema.validate(req.body);
+
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
 
   // É necessário checar a existência do Pet
   // SELECT * FROM pets WHERE id = "req.params.id";
