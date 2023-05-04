@@ -32,7 +32,7 @@ const clienteSchema = Joi.object({
       'string.empty': 'O campo cidade não pode estar vazio',
       'string.base': 'O campo cidade deve ser uma string'
     }),
-    cep: Joi.string().length(8).required().messages({
+    cep: Joi.string().length(9).required().messages({
       'string.empty': 'O campo cep não pode estar vazio',
       'string.length': 'O campo cep deve ter exatamente 8 caracteres',
       'string.base': 'O campo cep deve ser uma string'
