@@ -16,6 +16,13 @@ Copyright (c) 2023 SoulPet]
   - [Ferramentas necessárias](#ferramentas-necessárias-necessárias)
 - [Utilização](#utilização)
   - [Inicialização](#inicialização)
+  - [Models](#models)
+    - [Clientes](#clientes)
+    - [Endereço](#endereco)
+    - [Pets](#pets)
+    - [Produtos](#produtos)
+    - [Agendamentos](#agendamentos)
+    - [Serviços](#servicos)
   - [Rotas Disponíveis](#rotas-disponíveis)
 
 
@@ -144,7 +151,7 @@ DB_PASSWORD=(senha do mySQL)
   - Obrigatório
 
 ## Rotas disponíveis:
-#
+
 ### **Clientes**
 ### GET
 - Lista todos os clientes http://localhost:3001/clientes  
