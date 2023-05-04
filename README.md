@@ -249,7 +249,7 @@ DB_PASSWORD=(senha do mySQL)
 &ensp;&ensp;*`nome` = Nome do produto*  
 &ensp;&ensp;*`descricao` = Descrição do produto*  
 &ensp;&ensp;*`preco` = Preço do produto*  
-&ensp;&ensp;*`desconto` =  Desconto a ser aplicado no produto*
+&ensp;&ensp;*`desconto` =  Desconto a ser aplicado no produto*  
 &ensp;&ensp;*`dataDesconto` =  Data de vencimento do desconto*  
 &ensp;&ensp;*`categoria` =  Categoria do produto*
 
