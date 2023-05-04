@@ -13,7 +13,7 @@ router.get("/servicos", async (req, res) =>{
 }) 
 
 //Listar um serviço por id
-router.get('/servicos/:id', async (req, res) => {
+router.get('/servicos/:id', async (req, res, next) => {
   try {
     const servico = await Servico.findOne({
       where: { id: req.params.id },
@@ -26,11 +26,11 @@ router.get('/servicos/:id', async (req, res) => {
     return res.json(servico);
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: 'Ocorreu um erro ao buscar o serviço solicitado.' });
+    next(err) 
   }
 });
 
-router.post("/servicos", async (req, res) => {
+router.post("/servicos", async (req, res, next) => {
   const { nome, preco } = req.body;
   const { error, value } = servicoSchema.validate(req.body);
   
@@ -42,24 +42,24 @@ router.post("/servicos", async (req, res) => {
         const novoServico = await Servico.create({ nome, preco })
         res.status(201).json(novoServico);
     } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: "Um erro aconteceu"})
+      console.error(err);
+      next(err) 
     }
   });
 
 //Deletar todos os serviços
-router.delete("/servicos/all", async (req, res) => {
+router.delete("/servicos/all", async (req, res, next) => {
     try {
       await Servico.destroy({ where: {} });
       res.status(200).json({ message: "Todos os serviços foram removidos!" });
     } catch (err) {
       console.error(err);
-      res.status(500).json({ message: "Um erro aconteceu." });
+      next(err) 
     }
   });
 
 //Deletar serviço por id
-router.delete("/servicos/:id", async (req, res) => {
+router.delete("/servicos/:id", async (req, res, next) => {
     const { id } = req.params;
     
     const servico = await Servico.findOne({ where: { id } });
@@ -72,7 +72,7 @@ router.delete("/servicos/:id", async (req, res) => {
       }
     } catch (err) {
       console.error(err);
-      res.status(500).json({ message: "Um erro aconteceu." });
+      next(err) 
     }
 });
 

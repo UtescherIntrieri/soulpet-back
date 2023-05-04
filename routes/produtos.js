@@ -32,7 +32,7 @@ router.get("/produtos/:id", async (req, res) => {
 });
 
 // Adicionar produto
-router.post("/produtos", async (req, res) => {
+router.post("/produtos", async (req, res, next) => {
   const { nome, descricao, preco, desconto, dataDesconto, categoria } = req.body
   const categorias = ["Higiene", "Brinquedos", "Conforto"]
   const { error, value } = produtoSchema.validate(req.body);
@@ -56,13 +56,13 @@ router.post("/produtos", async (req, res) => {
       res.status(201).json(novoProduto)
     }
   } catch (error) {
-    console.log(err);
-    res.status(500).json({ message: "Um erro aconteceu" })
+    console.error(err);
+    next(err) 
   }
 })
 
 // Editar produto
-router.put("/produtos/:id", async (req, res) => {
+router.put("/produtos/:id", async (req, res, next) => {
   const { nome, descricao, preco, desconto, dataDesconto, categoria } = req.body
   const categorias = ["Higiene", "Brinquedos", "Conforto"]
   const produto = await Produto.findByPk(req.params.id);
@@ -94,24 +94,24 @@ router.put("/produtos/:id", async (req, res) => {
       res.status(404).json({ message: "O produto não foi encontrado." });
     }
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Um erro aconteceu" })
+    console.error(err);
+    next(err) 
   }
 })
 
 //Deletar todos os produtos da tabela
-router.delete("/produtos/all", async (req, res) => {
+router.delete("/produtos/all", async (req, res, next) => {
   try {
     await Produto.destroy({ where: {} });
     res.status(200).json({ message: "Todos os produtos foram removidos." });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Um erro aconteceu." });
+    next(err) 
   }
 });
 
 //Deletar produto por id
-router.delete("/produtos/:id", async (req, res) => {
+router.delete("/produtos/:id", async (req, res, next) => {
 
   const { id } = req.params;
 
@@ -125,7 +125,7 @@ router.delete("/produtos/:id", async (req, res) => {
     }
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Um erro aconteceu." });
+    next(err) 
   }
 });
 

@@ -44,7 +44,7 @@ router.get('/pedidos/clientes/:id', async (req, res) => {
   res.json(listaPedidos);
 });
 
-router.get('/pedidos/produtos/:id', async (req, res) => {
+router.get('/pedidos/produtos/:id', async (req, res,) => {
     const { id } = req.params;
   
     // Verificar se o cliente existe
@@ -62,7 +62,7 @@ router.get('/pedidos/produtos/:id', async (req, res) => {
     res.json(listaPedidos);
   });
 
-router.post("/pedidos", async (req, res) => {
+router.post("/pedidos", async (req, res, next) => {
   const { codigo, quantidade, clienteId, produtoId, } = req.body;
   const { error, value } = pedidoSchema.validate(req.body);
 
@@ -81,12 +81,12 @@ router.post("/pedidos", async (req, res) => {
     }
 
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Um erro aconteceu." });
+    console.error(err);
+    next(err) 
   }
 })
 
-router.put('/pedidos/:id', async (req, res) => {
+router.put('/pedidos/:id', async (req, res, next) => {
   try {
     const pedidoAtualizado = req.body;
     const pedidoId = req.params.id;
@@ -110,12 +110,12 @@ router.put('/pedidos/:id', async (req, res) => {
 
     res.status(200).json(pedido);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Erro ao atualizar pedido' });
+    console.error(err);
+    next(err) 
   }
 });
 
-router.delete("/pedidos/:id", async (req, res) => {
+router.delete("/pedidos/:id", async (req, res, next) => {
   // Precisamos checar se o pedido existe antes de apagar
   const pedido = await pedido.findByPk(req.params.id);
 
@@ -128,8 +128,8 @@ router.delete("/pedidos/:id", async (req, res) => {
       res.status(404).json({ message: "O pedido não foi encontrado" });
     }
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Um erro aconteceu." });
+    console.error(err);
+    next(err) 
   }
 });
 
