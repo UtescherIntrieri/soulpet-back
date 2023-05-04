@@ -22,8 +22,14 @@ Copyright (c) 2023 SoulPet]
     - [Pets](#pets)
     - [Produtos](#produtos)
     - [Agendamentos](#agendamentos)
-    - [Serviços](#servicos)
+    - [Serviços](#serviços)
   - [Rotas Disponíveis](#rotas-disponíveis)
+    - [Clientes](#clientes-1)
+    - [Pets](#pets-1)
+    - [Produtos](#produtos-1)
+    - [Agendamentos](#agendamentos-1)
+    - [Serviços](#servic3a7os-1)
+- [Devs](#devs)
 
 
 #
