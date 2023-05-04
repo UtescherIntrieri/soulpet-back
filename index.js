@@ -26,7 +26,7 @@ const rotasServicos = require("./routes/servicos");
 const rotasAgendamentos = require("./routes/agendamentos");
 const rotasPedidos = require("./routes/pedidos");
 const rotasDashboard = require("./routes/dashboard")
-
+const errorStatus = require("./database/errorStatus")
 
 
 // Juntar ao app as rotas dos arquivos
@@ -37,6 +37,7 @@ app.use(rotasServicos);
 app.use(rotasAgendamentos);
 app.use(rotasPedidos);
 app.use(rotasDashboard);
+app.use(errorStatus)
 
 
 

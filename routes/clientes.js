@@ -31,7 +31,7 @@ router.get("/clientes/:id", async (req, res) => {
 
 //Rota get para mostrar apenas o endereço do cliente
 
-router.get('/clientes/:clienteId/endereco', async (req, res) => {
+router.get('/clientes/:clienteId/endereco', async (req, res, next) => {
   try {
     const { clienteId } = req.params;
 
@@ -42,12 +42,12 @@ router.get('/clientes/:clienteId/endereco', async (req, res) => {
 
     res.json(endereco);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensagem: "Ocorreu um erro ao buscar o endereço do cliente." });
+    console.error(err);
+    next(err) 
   }
 });
 
-router.post("/clientes", async (req, res) => {
+router.post("/clientes", async (req, res, next) => {
   // Coletar os dados do req.body
   const { nome, email, telefone, endereco } = req.body;
   const { error, value } = clienteSchema.validate(req.body);
@@ -65,13 +65,13 @@ router.post("/clientes", async (req, res) => {
 
     res.status(201).json(novo);
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Um erro aconteceu." });
+    console.error(err);
+    next(err) 
   }
 });
 
 // atualizar um cliente
-router.put("/clientes/:id", async (req, res) => {
+router.put("/clientes/:id", async (req, res, next) => {
   // obter dados do corpo da requisão
   const { nome, email, telefone, endereco } = req.body;
   // obter identificação do cliente pelos parametros da rota
@@ -97,12 +97,12 @@ router.put("/clientes/:id", async (req, res) => {
     }
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Um erro aconteceu." });
+    next(err) 
   }
 });
 
 // excluir um cliente
-router.delete("/clientes/:id", async (req, res) => {
+router.delete("/clientes/:id", async (req, res, next) => {
   // obter identificação do cliente pela rota
   const { id } = req.params;
   // buscar cliente por id
@@ -116,7 +116,7 @@ router.delete("/clientes/:id", async (req, res) => {
     }
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Um erro aconteceu." });
+    next(err) 
   }
 });
 
