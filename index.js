@@ -27,7 +27,6 @@ const rotasAgendamentos = require("./routes/agendamentos");
 const rotasPedidos = require("./routes/pedidos");
 const rotasDashboard = require("./routes/dashboard")
 const errorStatus = require("./database/errorStatus")
-const rotasPedidos = require("./routes/pedidos")
 
 // Juntar ao app as rotas dos arquivos
 app.use(rotasClientes); // Configurar o grupo de rotas no app
@@ -38,7 +37,6 @@ app.use(rotasAgendamentos);
 app.use(rotasPedidos);
 app.use(rotasDashboard);
 app.use(errorStatus)
-app.use(rotasPedidos);
 
 
 // Escuta de eventos (listen)
