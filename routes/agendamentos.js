@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { Agendamento } = require("../database/agendamento");
 const { agendamentoSchema } = require("../database/agendamento");
-const Pet = require("../database/pet");
+const { Pet } = require("../database/pet");
 const { Servico } = require("../database/servico");
 
 const router = Router();
@@ -38,7 +38,7 @@ router.post("/agendamentos", async (req, res) => {
     const { error, value } = agendamentoSchema.validate(req.body);
 
     if(error) {
-        return res.status(400).json({ message: "Erro de validação", error: error.details })
+        return res.status(400).json({ message: "Erro de validação", error: error.details[0].message })
     }
     try {
     const pet = await Pet.findByPk(petId);
@@ -61,6 +61,11 @@ router.post("/agendamentos", async (req, res) => {
 
     router.put("/agendamentos/:id", async (req, res) => {
         const { dataAgendada, realizada, petId, servicoId } = req.body;
+        const { error, value } = agendamentoSchema.validate(req.body);
+
+      if(error) {
+        return res.status(400).json({ message: "Erro de validação", error: error.details[0].message })
+     }
         
         const pet = await Pet.findByPk(petId);
         const servico = await Servico.findByPk(servicoId);

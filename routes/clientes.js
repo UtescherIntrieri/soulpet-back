@@ -1,4 +1,5 @@
-const Cliente = require("../database/cliente");
+const { Cliente } = require("../database/cliente");
+const { clienteSchema } = require("../database/cliente")
 const Endereco = require("../database/endereco");
 
 const { Router } = require("express");
@@ -49,6 +50,11 @@ router.get('/clientes/:clienteId/endereco', async (req, res) => {
 router.post("/clientes", async (req, res) => {
   // Coletar os dados do req.body
   const { nome, email, telefone, endereco } = req.body;
+  const { error, value } = clienteSchema.validate(req.body);
+
+  if(error) {
+    return res.status(400).json({ message: "Erro de validação", error: error.details[0].message })
+  }
 
   try {
     // Dentro de 'novo' estará o o objeto criado
@@ -76,6 +82,10 @@ router.put("/clientes/:id", async (req, res) => {
     // validar a existência desse cliente no banco de dados
     if (cliente) {
       // validar a existência desse do endereço passdo no corpo da requisição
+      const { error, value } = clienteSchema.validate(req.body);
+      if(error) {
+        return res.status(400).json({ message: "Erro de validação", error: error.details[0].message })
+      }
       if (endereco) {
         await Endereco.update(endereco, { where: { clienteId: id } });
       }

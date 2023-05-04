@@ -35,7 +35,7 @@ router.post("/servicos", async (req, res) => {
   const { error, value } = servicoSchema.validate(req.body);
   
   if(error) {
-    return res.status(400).json({ message: "Erro de validação", error: error.details  });
+    return res.status(400).json({ message: "Erro de validação", error: error.details[0].message })
   }
 
     try {
@@ -60,7 +60,6 @@ router.delete("/servicos/all", async (req, res) => {
 
 //Deletar serviço por id
 router.delete("/servicos/:id", async (req, res) => {
-   
     const { id } = req.params;
     
     const servico = await Servico.findOne({ where: { id } });

@@ -1,5 +1,5 @@
-const Cliente = require("../database/cliente");
-const Pet = require("../database/pet");
+const { Cliente } = require("../database/cliente");
+const { Pet } = require("../database/pet");
 const {Servico} = require("../database/servico");
 const {Agendamento} = require("../database/agendamento");
 const Produto = require("../database/produto");
